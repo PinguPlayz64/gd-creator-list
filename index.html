@@ -96,6 +96,13 @@
       flex: 1;
     }
 
+    .category-description {
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.5rem;
+    }
+
     .controls {
       display: flex;
       flex-wrap: wrap;
@@ -301,6 +308,13 @@
   </header>
 
   <main>
+
+    <div class="category-description">
+      Approved creators are widely respected, high‑quality Geometry Dash creators.  
+      Half‑Approved creators are good creators with mixed reception or inconsistent output.  
+      Not Approved creators are creators with major controversies or confirmed issues.
+    </div>
+
     <div class="controls">
       <div class="filter-group">
         <button class="pill active" data-filter="all">
@@ -346,6 +360,7 @@
 
   <script>
     const creators = [
+      /* APPROVED */
       { name: "Viprin", status: "Approved", knownFor: "Leading huge megacollabs and being one of the most influential creators." },
       { name: "FunnyGame", status: "Approved", knownFor: "Artistic, experimental levels that defined creative design in GD." },
       { name: "Serponge", status: "Approved", knownFor: "Unique mechanic‑driven levels that push the GD engine." },
@@ -355,17 +370,35 @@
       { name: "Krazyman50", status: "Approved", knownFor: "Popular levels like CraZy and consistent high‑quality design." },
       { name: "Rustam", status: "Approved", knownFor: "Creative, polished levels with a strong visual identity." },
 
+      /* NEW APPROVED */
+      { name: "Zender Game", status: "Approved", knownFor: "Polished modern levels with clean visuals." },
+      { name: "ViPriN 2", status: "Approved", knownFor: "Major megacollab contributions and team leadership." },
+      { name: "EnZore", status: "Approved", knownFor: "Clean modern design and consistent quality." },
+      { name: "Lime", status: "Approved", knownFor: "Smooth gameplay and strong visual identity." },
+
+      /* HALF-APPROVED */
       { name: "Manix648", status: "Half-Approved", knownFor: "High‑quality demons with creative but sometimes polarizing gameplay." },
       { name: "HJFod", status: "Half-Approved", knownFor: "Creating Ultimate Destruction and contributing tools/mods to the community." },
       { name: "Jenkins", status: "Half-Approved", knownFor: "Unique design ideas with mixed reception in gameplay quality." },
       { name: "TriAxis", status: "Half-Approved", knownFor: "Creative concepts and early‑era influence, though not always consistent." },
       { name: "Evasium", status: "Half-Approved", knownFor: "Solid modern‑style levels with occasional community criticism." },
 
+      /* NEW HALF-APPROVED */
+      { name: "Darwin", status: "Half-Approved", knownFor: "Creative ideas but sometimes controversial." },
+      { name: "Giron", status: "Half-Approved", knownFor: "Good designs but not always polished." },
+      { name: "Nexus", status: "Half-Approved", knownFor: "Strong ideas with inconsistent execution." },
+
+      /* NOT APPROVED */
       { name: "Cyclic", status: "Not Approved", knownFor: "Admitting to hacking multiple demon completions." },
       { name: "SpaceUK", status: "Not Approved", knownFor: "Faking dozens of top‑1 demon records and being banned." },
       { name: "Neptune", status: "Not Approved", knownFor: "Early demon levels and multiple plagiarism controversies." },
       { name: "Sunix", status: "Not Approved", knownFor: "Multiple accusations of hacked completions despite strong skill." },
-      { name: "Andromeda", status: "Not Approved", knownFor: "Confirmed hacking in several demon completions." }
+      { name: "Andromeda", status: "Not Approved", knownFor: "Confirmed hacking in several demon completions." },
+
+      /* NEW NOT APPROVED */
+      { name: "Mullsy", status: "Not Approved", knownFor: "Confirmed hacked completions." },
+      { name: "Luqualizer", status: "Not Approved", knownFor: "Cheating in multiple records." },
+      { name: "Stormfly", status: "Not Approved", knownFor: "Long history of hacking accusations and bans." }
     ];
 
     const tbody = document.getElementById("creatorTableBody");
