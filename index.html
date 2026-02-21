@@ -2,8 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>GD Creator List</title>
+
+  <!-- SEO: Search Engine Indexing -->
+  <meta name="description" content="Geometry Dash Creator List by PinguPlayz64. Approved, Half-Approved, and Not Approved GD creators with a clean Pointercrate-style UI.">
+  <meta name="keywords" content="Geometry Dash, GD Creator List, PinguPlayz64, GD creators, Pointercrate, GD list, Geometry Dash creators, demon list">
+  <meta name="author" content="PinguPlayz64">
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow">
+  <meta name="bingbot" content="index, follow">
+
+  <!-- Social Media Preview -->
+  <meta property="og:title" content="GD Creator List - By PinguPlayz64">
+  <meta property="og:description" content="A Pointercrate-style Geometry Dash Creator List with categories, search, and clean UI.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://PinguPlayz64.github.io/gd-creator-list/">
+
+  <title>GD Creator List - Geometry Dash Creator Rankings</title>
+
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <style>
     :root {
       --bg: #05060a;
@@ -266,19 +283,20 @@
         max-width: 100%;
       }
       th:nth-child(3), td:nth-child(3) {
-        display: none; /* hide description on very small screens */
+        display: none;
       }
     }
   </style>
 </head>
+
 <body>
   <header>
     <div class="title-row">
       <h1>GD Creator List</h1>
-      <span class="badge">Custom Community Ranking</span>
+      <span class="badge">By PinguPlayz64</span>
     </div>
     <div class="subtitle">
-      Inspired by the Pointercrate Demon List — categorizing Geometry Dash creators as Approved, Half‑Approved, and Not Approved.
+      A Pointercrate-inspired Geometry Dash Creator Ranking.
     </div>
   </header>
 
@@ -303,7 +321,7 @@
         </button>
       </div>
       <div class="search-box">
-        <input id="searchInput" type="text" placeholder="Search creator…" />
+        <input id="searchInput" type="text" placeholder="Search creator…">
       </div>
     </div>
 
@@ -317,20 +335,17 @@
             <th>Status</th>
           </tr>
         </thead>
-        <tbody id="creatorTableBody">
-          <!-- rows injected by JS -->
-        </tbody>
+        <tbody id="creatorTableBody"></tbody>
       </table>
     </div>
 
     <div class="footer-note">
-      List data is custom and unofficial. Layout styled to echo Pointercrate‑style rankings.
+      Custom GD Creator List © 2025 by PinguPlayz64
     </div>
   </main>
 
   <script>
     const creators = [
-      // Approved
       { name: "Viprin", status: "Approved", knownFor: "Leading huge megacollabs and being one of the most influential creators." },
       { name: "FunnyGame", status: "Approved", knownFor: "Artistic, experimental levels that defined creative design in GD." },
       { name: "Serponge", status: "Approved", knownFor: "Unique mechanic‑driven levels that push the GD engine." },
@@ -340,14 +355,12 @@
       { name: "Krazyman50", status: "Approved", knownFor: "Popular levels like CraZy and consistent high‑quality design." },
       { name: "Rustam", status: "Approved", knownFor: "Creative, polished levels with a strong visual identity." },
 
-      // Half‑Approved
       { name: "Manix648", status: "Half-Approved", knownFor: "High‑quality demons with creative but sometimes polarizing gameplay." },
       { name: "HJFod", status: "Half-Approved", knownFor: "Creating Ultimate Destruction and contributing tools/mods to the community." },
       { name: "Jenkins", status: "Half-Approved", knownFor: "Unique design ideas with mixed reception in gameplay quality." },
       { name: "TriAxis", status: "Half-Approved", knownFor: "Creative concepts and early‑era influence, though not always consistent." },
       { name: "Evasium", status: "Half-Approved", knownFor: "Solid modern‑style levels with occasional community criticism." },
 
-      // Not Approved
       { name: "Cyclic", status: "Not Approved", knownFor: "Admitting to hacking multiple demon completions." },
       { name: "SpaceUK", status: "Not Approved", knownFor: "Faking dozens of top‑1 demon records and being banned." },
       { name: "Neptune", status: "Not Approved", knownFor: "Early demon levels and multiple plagiarism controversies." },
@@ -371,12 +384,8 @@
     function renderTable() {
       tbody.innerHTML = "";
       const filtered = creators
+        .filter(c => currentFilter === "all" || c.status === currentFilter)
         .filter(c => {
-          if (currentFilter === "all") return true;
-          return c.status === currentFilter;
-        })
-        .filter(c => {
-          if (!currentSearch.trim()) return true;
           const q = currentSearch.toLowerCase();
           return (
             c.name.toLowerCase().includes(q) ||
@@ -387,35 +396,17 @@
       filtered.forEach((creator, index) => {
         const tr = document.createElement("tr");
 
-        const rankTd = document.createElement("td");
-        rankTd.className = "rank";
-        rankTd.textContent = index + 1;
-        tr.appendChild(rankTd);
-
-        const nameTd = document.createElement("td");
-        nameTd.className = "name";
-        nameTd.textContent = creator.name;
-        tr.appendChild(nameTd);
-
-        const knownTd = document.createElement("td");
-        knownTd.textContent = creator.knownFor;
-        tr.appendChild(knownTd);
-
-        const statusTd = document.createElement("td");
-        const wrapper = document.createElement("div");
-        wrapper.className = "status-cell";
-
-        const dot = document.createElement("span");
-        dot.className = "status-dot " + statusClass(creator.status);
-
-        const tag = document.createElement("span");
-        tag.className = "tag " + statusClass(creator.status);
-        tag.textContent = creator.status;
-
-        wrapper.appendChild(dot);
-        wrapper.appendChild(tag);
-        statusTd.appendChild(wrapper);
-        tr.appendChild(statusTd);
+        tr.innerHTML = `
+          <td class="rank">${index + 1}</td>
+          <td class="name">${creator.name}</td>
+          <td>${creator.knownFor}</td>
+          <td>
+            <div class="status-cell">
+              <span class="status-dot ${statusClass(creator.status)}"></span>
+              <span class="tag ${statusClass(creator.status)}">${creator.status}</span>
+            </div>
+          </td>
+        `;
 
         tbody.appendChild(tr);
       });
