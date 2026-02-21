@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GD Creator List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #05060a;
+      --bg-alt: #0b0d14;
+      --accent: #ffb347;
+      --accent-2: #4fd1c5;
+      --danger: #ff5c5c;
+      --text: #f5f5f5;
+      --muted: #9ca3af;
+      --border: #1f2933;
+      --approved: #4ade80;
+      --half: #facc15;
+      --not: #f97373;
+      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-main);
+      background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 1.5rem 6vw 1rem;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(90deg, rgba(15,23,42,0.95), rgba(15,23,42,0.7));
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .title-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      margin: 0;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    main {
+      padding: 1.5rem 6vw 3rem;
+      flex: 1;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      border-radius: 999px;
+      padding: 0.35rem 0.8rem;
+      font-size: 0.8rem;
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,0.9);
+      color: var(--muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.15s ease;
+    }
+
+    .pill span.dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    .pill[data-filter="all"] .dot { background: var(--accent-2); }
+    .pill[data-filter="Approved"] .dot { background: var(--approved); }
+    .pill[data-filter="Half-Approved"] .dot { background: var(--half); }
+    .pill[data-filter="Not Approved"] .dot { background: var(--not); }
+
+    .pill.active {
+      border-color: var(--accent-2);
+      color: #e5e7eb;
+      background: radial-gradient(circle at top left, rgba(79,209,197,0.25), rgba(15,23,42,0.95));
+    }
+
+    .search-box {
+      margin-left: auto;
+      min-width: 180px;
+      max-width: 260px;
+      flex: 1 1 180px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 0.45rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,0.9);
+      color: var(--text);
+      font-size: 0.85rem;
+      outline: none;
+      transition: border 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent-2);
+      box-shadow: 0 0 0 1px rgba(79,209,197,0.4);
+    }
+
+    .table-wrapper {
+      border-radius: 0.75rem;
+      border: 1px solid var(--border);
+      background: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.9));
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    thead {
+      background: radial-gradient(circle at top left, rgba(79,209,197,0.18), rgba(15,23,42,0.98));
+    }
+
+    th, td {
+      padding: 0.6rem 0.9rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(31,41,55,0.9);
+    }
+
+    th {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    tbody tr:nth-child(even) {
+      background: rgba(15,23,42,0.85);
+    }
+
+    tbody tr:nth-child(odd) {
+      background: rgba(10,16,30,0.95);
+    }
+
+    tbody tr:hover {
+      background: rgba(30,64,175,0.35);
+    }
+
+    .rank {
+      font-variant-numeric: tabular-nums;
+      color: var(--muted);
+      width: 3rem;
+    }
+
+    .name {
+      font-weight: 500;
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: 1px solid transparent;
+    }
+
+    .tag.approved {
+      color: var(--approved);
+      border-color: rgba(74,222,128,0.5);
+      background: rgba(22,101,52,0.25);
+    }
+
+    .tag.half {
+      color: var(--half);
+      border-color: rgba(250,204,21,0.5);
+      background: rgba(113,63,18,0.25);
+    }
+
+    .tag.not {
+      color: var(--not);
+      border-color: rgba(248,113,113,0.5);
+      background: rgba(127,29,29,0.25);
+    }
+
+    .status-cell {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .status-dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 999px;
+    }
+
+    .status-dot.approved { background: var(--approved); }
+    .status-dot.half { background: var(--half); }
+    .status-dot.not { background: var(--not); }
+
+    .footer-note {
+      margin-top: 1rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    @media (max-width: 720px) {
+      header, main {
+        padding-left: 4vw;
+        padding-right: 4vw;
+      }
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .search-box {
+        margin-left: 0;
+        max-width: 100%;
+      }
+      th:nth-child(3), td:nth-child(3) {
+        display: none; /* hide description on very small screens */
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="title-row">
+      <h1>GD Creator List</h1>
+      <span class="badge">Custom Community Ranking</span>
+    </div>
+    <div class="subtitle">
+      Inspired by the Pointercrate Demon List — categorizing Geometry Dash creators as Approved, Half‑Approved, and Not Approved.
+    </div>
+  </header>
+
+  <main>
+    <div class="controls">
+      <div class="filter-group">
+        <button class="pill active" data-filter="all">
+          <span class="dot"></span>
+          All
+        </button>
+        <button class="pill" data-filter="Approved">
+          <span class="dot"></span>
+          Approved
+        </button>
+        <button class="pill" data-filter="Half-Approved">
+          <span class="dot"></span>
+          Half‑Approved
+        </button>
+        <button class="pill" data-filter="Not Approved">
+          <span class="dot"></span>
+          Not Approved
+        </button>
+      </div>
+      <div class="search-box">
+        <input id="searchInput" type="text" placeholder="Search creator…" />
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Creator</th>
+            <th>Known For</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="creatorTableBody">
+          <!-- rows injected by JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer-note">
+      List data is custom and unofficial. Layout styled to echo Pointercrate‑style rankings.
+    </div>
+  </main>
+
+  <script>
+    const creators = [
+      // Approved
+      { name: "Viprin", status: "Approved", knownFor: "Leading huge megacollabs and being one of the most influential creators." },
+      { name: "FunnyGame", status: "Approved", knownFor: "Artistic, experimental levels that defined creative design in GD." },
+      { name: "Serponge", status: "Approved", knownFor: "Unique mechanic‑driven levels that push the GD engine." },
+      { name: "Etzer", status: "Approved", knownFor: "Clean, stylish levels and respected long‑term contributions." },
+      { name: "MindCap", status: "Approved", knownFor: "Creating the Top 8 Every End series and becoming an iconic modern GD creator." },
+      { name: "Zobros", status: "Approved", knownFor: "Classic demons like The Hell Zone and early demon‑era influence." },
+      { name: "Krazyman50", status: "Approved", knownFor: "Popular levels like CraZy and consistent high‑quality design." },
+      { name: "Rustam", status: "Approved", knownFor: "Creative, polished levels with a strong visual identity." },
+
+      // Half‑Approved
+      { name: "Manix648", status: "Half-Approved", knownFor: "High‑quality demons with creative but sometimes polarizing gameplay." },
+      { name: "HJFod", status: "Half-Approved", knownFor: "Creating Ultimate Destruction and contributing tools/mods to the community." },
+      { name: "Jenkins", status: "Half-Approved", knownFor: "Unique design ideas with mixed reception in gameplay quality." },
+      { name: "TriAxis", status: "Half-Approved", knownFor: "Creative concepts and early‑era influence, though not always consistent." },
+      { name: "Evasium", status: "Half-Approved", knownFor: "Solid modern‑style levels with occasional community criticism." },
+
+      // Not Approved
+      { name: "Cyclic", status: "Not Approved", knownFor: "Admitting to hacking multiple demon completions." },
+      { name: "SpaceUK", status: "Not Approved", knownFor: "Faking dozens of top‑1 demon records and being banned." },
+      { name: "Neptune", status: "Not Approved", knownFor: "Early demon levels and multiple plagiarism controversies." },
+      { name: "Sunix", status: "Not Approved", knownFor: "Multiple accusations of hacked completions despite strong skill." },
+      { name: "Andromeda", status: "Not Approved", knownFor: "Confirmed hacking in several demon completions." }
+    ];
+
+    const tbody = document.getElementById("creatorTableBody");
+    const filterButtons = document.querySelectorAll(".pill");
+    const searchInput = document.getElementById("searchInput");
+
+    let currentFilter = "all";
+    let currentSearch = "";
+
+    function statusClass(status) {
+      if (status === "Approved") return "approved";
+      if (status === "Half-Approved") return "half";
+      return "not";
+    }
+
+    function renderTable() {
+      tbody.innerHTML = "";
+      const filtered = creators
+        .filter(c => {
+          if (currentFilter === "all") return true;
+          return c.status === currentFilter;
+        })
+        .filter(c => {
+          if (!currentSearch.trim()) return true;
+          const q = currentSearch.toLowerCase();
+          return (
+            c.name.toLowerCase().includes(q) ||
+            c.knownFor.toLowerCase().includes(q)
+          );
+        });
+
+      filtered.forEach((creator, index) => {
+        const tr = document.createElement("tr");
+
+        const rankTd = document.createElement("td");
+        rankTd.className = "rank";
+        rankTd.textContent = index + 1;
+        tr.appendChild(rankTd);
+
+        const nameTd = document.createElement("td");
+        nameTd.className = "name";
+        nameTd.textContent = creator.name;
+        tr.appendChild(nameTd);
+
+        const knownTd = document.createElement("td");
+        knownTd.textContent = creator.knownFor;
+        tr.appendChild(knownTd);
+
+        const statusTd = document.createElement("td");
+        const wrapper = document.createElement("div");
+        wrapper.className = "status-cell";
+
+        const dot = document.createElement("span");
+        dot.className = "status-dot " + statusClass(creator.status);
+
+        const tag = document.createElement("span");
+        tag.className = "tag " + statusClass(creator.status);
+        tag.textContent = creator.status;
+
+        wrapper.appendChild(dot);
+        wrapper.appendChild(tag);
+        statusTd.appendChild(wrapper);
+        tr.appendChild(statusTd);
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        filterButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentFilter = btn.getAttribute("data-filter");
+        renderTable();
+      });
+    });
+
+    searchInput.addEventListener("input", e => {
+      currentSearch = e.target.value;
+      renderTable();
+    });
+
+    renderTable();
+  </script>
+</body>
+</html>
