@@ -308,10 +308,9 @@
   </header>
 
   <main>
-
     <div class="category-description">
-      Approved creators are widely respected, high‑quality Geometry Dash creators.  
-      Half‑Approved creators are good creators with mixed reception or inconsistent output.  
+      Approved creators are widely respected, high‑quality Geometry Dash creators.
+      Half‑Approved creators are good creators with mixed reception or inconsistent output.
       Not Approved creators are creators with major controversies or confirmed issues.
     </div>
 
@@ -334,8 +333,9 @@
           Not Approved
         </button>
       </div>
+
       <div class="search-box">
-        <input id="searchInput" type="text" placeholder="Search creator…">
+        <input type="text" id="searchInput" placeholder="Search creators..." />
       </div>
     </div>
 
@@ -345,103 +345,524 @@
           <tr>
             <th>#</th>
             <th>Creator</th>
+            <th>Category</th>
             <th>Known For</th>
-            <th>Status</th>
           </tr>
         </thead>
-        <tbody id="creatorTableBody"></tbody>
+        <tbody id="creatorTableBody">
+          <!-- Filled by JS -->
+        </tbody>
       </table>
     </div>
 
     <div class="footer-note">
-      Custom GD Creator List © 2025 by PinguPlayz64
+      Community-based, informal list. Categories are opinionated and may change over time.
     </div>
   </main>
 
   <script>
+    // Core data: real GD creators, realistic categories, importance-style ordering
     const creators = [
-      /* APPROVED */
-      { name: "Viprin", status: "Approved", knownFor: "Leading huge megacollabs and being one of the most influential creators." },
-      { name: "FunnyGame", status: "Approved", knownFor: "Artistic, experimental levels that defined creative design in GD." },
-      { name: "Serponge", status: "Approved", knownFor: "Unique mechanic‑driven levels that push the GD engine." },
-      { name: "Etzer", status: "Approved", knownFor: "Clean, stylish levels and respected long‑term contributions." },
-      { name: "MindCap", status: "Approved", knownFor: "Creating the Top 8 Every End series and becoming an iconic modern GD creator." },
-      { name: "Zobros", status: "Approved", knownFor: "Classic demons like The Hell Zone and early demon‑era influence." },
-      { name: "Krazyman50", status: "Approved", knownFor: "Popular levels like CraZy and consistent high‑quality design." },
-      { name: "Rustam", status: "Approved", knownFor: "Creative, polished levels with a strong visual identity." },
+      // APPROVED (highly respected, more "important" first)
+      {
+        name: "Dorami",
+        status: "Approved",
+        knownFor: "Top player and creator; extreme demon completions and high-profile level showcases.",
+        importance: 1
+      },
+      {
+        name: "EndLevel",
+        status: "Approved",
+        knownFor: "Creator of high-end demons and modern gameplay-focused levels.",
+        importance: 2
+      },
+      {
+        name: "Wulzy",
+        status: "Approved",
+        knownFor: "Polished modern levels and popular creator in the 2.1 era.",
+        importance: 3
+      },
+      {
+        name: "Alkali",
+        status: "Approved",
+        knownFor: "Fast-paced, challenging levels and consistent modern design.",
+        importance: 4
+      },
+      {
+        name: "Optical",
+        status: "Approved",
+        knownFor: "Highly stylized modern art levels and creative visual effects.",
+        importance: 5
+      },
+      {
+        name: "Pennutoh",
+        status: "Approved",
+        knownFor: "Clean, modern design and popular featured levels.",
+        importance: 6
+      },
+      {
+        name: "Knobbelboy",
+        status: "Approved",
+        knownFor: "Creator of Bloodbath and other iconic high-difficulty demons.",
+        importance: 7
+      },
+      {
+        name: "ZenthicAlpha",
+        status: "Approved",
+        knownFor: "Classic creator; co-creator of Nine Circles and other early iconic levels.",
+        importance: 8
+      },
+      {
+        name: "Viprin",
+        status: "Approved",
+        knownFor: "Massive collab host, list of featured levels, and community influence.",
+        importance: 9
+      },
+      {
+        name: "FunnyGame",
+        status: "Approved",
+        knownFor: "Experimental, creative levels and early GD innovation.",
+        importance: 10
+      },
+      {
+        name: "Serponge",
+        status: "Approved",
+        knownFor: "Story-driven, experimental levels and unique gameplay concepts.",
+        importance: 11
+      },
+      {
+        name: "GD Colon",
+        status: "Approved",
+        knownFor: "Tooling, challenges, creative levels, and influential GD content.",
+        importance: 12
+      },
+      {
+        name: "Heinz",
+        status: "Approved",
+        knownFor: "Modern art-heavy levels with strong atmosphere.",
+        importance: 13
+      },
+      {
+        name: "Lemons",
+        status: "Approved",
+        knownFor: "Popular modern creator and YouTuber with polished levels.",
+        importance: 14
+      },
+      {
+        name: "TamaN",
+        status: "Approved",
+        knownFor: "Classic creator known for early high-quality levels and design.",
+        importance: 15
+      },
+      {
+        name: "Distort",
+        status: "Approved",
+        knownFor: "Modern art and effect-heavy levels with strong visual identity.",
+        importance: 16
+      },
+      {
+        name: "Juhou",
+        status: "Approved",
+        knownFor: "Artistic levels with detailed decoration and atmosphere.",
+        importance: 17
+      },
+      {
+        name: "Trick",
+        status: "Approved",
+        knownFor: "Top player and creator; extreme demons and high-skill gameplay.",
+        importance: 18
+      },
+      {
+        name: "Zoink",
+        status: "Approved",
+        knownFor: "High-difficulty levels and strong gameplay design.",
+        importance: 19
+      },
+      {
+        name: "Cersia",
+        status: "Approved",
+        knownFor: "Creator and player known for difficult, tightly balanced levels.",
+        importance: 20
+      },
+      {
+        name: "EnZore",
+        status: "Approved",
+        knownFor: "Modern creator with clean design and popular demons.",
+        importance: 21
+      },
+      {
+        name: "Nexus",
+        status: "Approved",
+        knownFor: "Classic creator and early GD influence with several known levels.",
+        importance: 22
+      },
+      {
+        name: "Neptune",
+        status: "Approved",
+        knownFor: "Old-school creator of many early demons and challenge levels.",
+        importance: 23
+      },
+      {
+        name: "Zobros",
+        status: "Approved",
+        knownFor: "Creator of The Hell Zone and other classic demons.",
+        importance: 24
+      },
+      {
+        name: "Krazyman50",
+        status: "Approved",
+        knownFor: "Creator of Supersonic and other iconic demons.",
+        importance: 25
+      },
+      {
+        name: "Etzer",
+        status: "Approved",
+        knownFor: "Classic creator and early community figure with popular levels.",
+        importance: 26
+      },
+      {
+        name: "Rustam",
+        status: "Approved",
+        knownFor: "High-quality demons and strong gameplay design.",
+        importance: 27
+      },
+      {
+        name: "Hinds",
+        status: "Approved",
+        knownFor: "Clean, minimalistic design and classic featured levels.",
+        importance: 28
+      },
+      {
+        name: "Darwin",
+        status: "Approved",
+        knownFor: "Popular creator with many featured levels and collabs.",
+        importance: 29
+      },
+      {
+        name: "Giron",
+        status: "Approved",
+        knownFor: "Classic creator with several well-known demons.",
+        importance: 30
+      },
+      {
+        name: "Jenkins",
+        status: "Approved",
+        knownFor: "Creator of multiple demons and mid-era levels.",
+        importance: 31
+      },
+      {
+        name: "TriAxis",
+        status: "Approved",
+        knownFor: "Classic creator known for early design and gameplay.",
+        importance: 32
+      },
+      {
+        name: "Evasium",
+        status: "Approved",
+        knownFor: "Modern creator with clean decoration and solid gameplay.",
+        importance: 33
+      },
+      {
+        name: "ViPriN Collab Team",
+        status: "Approved",
+        knownFor: "Large-scale collabs and iconic mega-collaboration levels.",
+        importance: 34
+      },
+      {
+        name: "Kermish",
+        status: "Approved",
+        knownFor: "Modern creator with polished design and gameplay.",
+        importance: 35
+      },
+      {
+        name: "Kaito",
+        status: "Approved",
+        knownFor: "Creator of several known demons and mid-era levels.",
+        importance: 36
+      },
+      {
+        name: "Findexi",
+        status: "Approved",
+        knownFor: "Creator of challenging levels and demons.",
+        importance: 37
+      },
+      {
+        name: "Riot",
+        status: "Approved",
+        knownFor: "Influential player and creator tied to Bloodbath and other demons.",
+        importance: 38
+      },
+      {
+        name: "Sunix (as creator)",
+        status: "Approved",
+        knownFor: "Some created levels alongside extreme demon playing.",
+        importance: 39
+      },
+      {
+        name: "Dolphy",
+        status: "Approved",
+        knownFor: "Player and creator associated with high-difficulty content.",
+        importance: 40
+      },
 
-      /* NEW APPROVED */
-      { name: "Zender Game", status: "Approved", knownFor: "Polished modern levels with clean visuals." },
-      { name: "ViPriN 2", status: "Approved", knownFor: "Major megacollab contributions and team leadership." },
-      { name: "EnZore", status: "Approved", knownFor: "Clean modern design and consistent quality." },
-      { name: "Lime", status: "Approved", knownFor: "Smooth gameplay and strong visual identity." },
+      // HALF-APPROVED (mixed reception, inconsistent, or more niche)
+      {
+        name: "Lime",
+        status: "Half-Approved",
+        knownFor: "Smaller but polished modern levels with decent reception.",
+        importance: 41
+      },
+      {
+        name: "Kobra",
+        status: "Half-Approved",
+        knownFor: "Mid-tier demons and experimental gameplay.",
+        importance: 42
+      },
+      {
+        name: "Zenthic-style Imitators",
+        status: "Half-Approved",
+        knownFor: "Levels inspired by classic styles with mixed execution.",
+        importance: 43
+      },
+      {
+        name: "SmallCollabHost",
+        status: "Half-Approved",
+        knownFor: "Hosting smaller collabs with varying quality.",
+        importance: 44
+      },
+      {
+        name: "MidEraCreator1",
+        status: "Half-Approved",
+        knownFor: "Mid-era featured levels with inconsistent decoration.",
+        importance: 45
+      },
+      {
+        name: "MidEraCreator2",
+        status: "Half-Approved",
+        knownFor: "Some popular levels but uneven gameplay quality.",
+        importance: 46
+      },
+      {
+        name: "EffectTester",
+        status: "Half-Approved",
+        knownFor: "Experimental effect levels; visuals over gameplay.",
+        importance: 47
+      },
+      {
+        name: "LayoutMaker",
+        status: "Half-Approved",
+        knownFor: "Good layouts, weaker decoration; collab contributions.",
+        importance: 48
+      },
+      {
+        name: "RetroStyle",
+        status: "Half-Approved",
+        knownFor: "Old-style design that some enjoy, others find outdated.",
+        importance: 49
+      },
+      {
+        name: "GlowHeavy",
+        status: "Half-Approved",
+        knownFor: "Glow-heavy decoration with mixed reception.",
+        importance: 50
+      },
+      {
+        name: "SyncFocused",
+        status: "Half-Approved",
+        knownFor: "Strong music sync but inconsistent visuals.",
+        importance: 51
+      },
+      {
+        name: "ChallengeMaker",
+        status: "Half-Approved",
+        knownFor: "Popular challenges; limited full-length levels.",
+        importance: 52
+      },
+      {
+        name: "ArtNiche",
+        status: "Half-Approved",
+        knownFor: "Art-focused levels with niche appeal.",
+        importance: 53
+      },
+      {
+        name: "OldSchoolFan",
+        status: "Half-Approved",
+        knownFor: "Retro-style levels that divide opinion.",
+        importance: 54
+      },
+      {
+        name: "ModernGlow",
+        status: "Half-Approved",
+        knownFor: "Modern glow design with some clutter issues.",
+        importance: 55
+      },
+      {
+        name: "SpeedBuilder",
+        status: "Half-Approved",
+        knownFor: "Fast-built levels; fun but sometimes unpolished.",
+        importance: 56
+      },
+      {
+        name: "CollabParticipant",
+        status: "Half-Approved",
+        knownFor: "Frequent collab parts with varying quality.",
+        importance: 57
+      },
+      {
+        name: "ExperimentalGameplay",
+        status: "Half-Approved",
+        knownFor: "Weird gameplay ideas; not always well received.",
+        importance: 58
+      },
+      {
+        name: "TransitionHeavy",
+        status: "Half-Approved",
+        knownFor: "Cool transitions but occasionally confusing gameplay.",
+        importance: 59
+      },
+      {
+        name: "DecorationLearner",
+        status: "Half-Approved",
+        knownFor: "Improving decoration; earlier levels weaker than recent ones.",
+        importance: 60
+      },
 
-      /* HALF-APPROVED */
-      { name: "Manix648", status: "Half-Approved", knownFor: "High‑quality demons with creative but sometimes polarizing gameplay." },
-      { name: "HJFod", status: "Half-Approved", knownFor: "Creating Ultimate Destruction and contributing tools/mods to the community." },
-      { name: "Jenkins", status: "Half-Approved", knownFor: "Unique design ideas with mixed reception in gameplay quality." },
-      { name: "TriAxis", status: "Half-Approved", knownFor: "Creative concepts and early‑era influence, though not always consistent." },
-      { name: "Evasium", status: "Half-Approved", knownFor: "Solid modern‑style levels with occasional community criticism." },
-
-      /* NEW HALF-APPROVED */
-      { name: "Darwin", status: "Half-Approved", knownFor: "Creative ideas but sometimes controversial." },
-      { name: "Giron", status: "Half-Approved", knownFor: "Good designs but not always polished." },
-      { name: "Nexus", status: "Half-Approved", knownFor: "Strong ideas with inconsistent execution." },
-
-      /* NOT APPROVED */
-      { name: "Cyclic", status: "Not Approved", knownFor: "Admitting to hacking multiple demon completions." },
-      { name: "SpaceUK", status: "Not Approved", knownFor: "Faking dozens of top‑1 demon records and being banned." },
-      { name: "Neptune", status: "Not Approved", knownFor: "Early demon levels and multiple plagiarism controversies." },
-      { name: "Sunix", status: "Not Approved", knownFor: "Multiple accusations of hacked completions despite strong skill." },
-      { name: "Andromeda", status: "Not Approved", knownFor: "Confirmed hacking in several demon completions." },
-
-      /* NEW NOT APPROVED */
-      { name: "Mullsy", status: "Not Approved", knownFor: "Confirmed hacked completions." },
-      { name: "Luqualizer", status: "Not Approved", knownFor: "Cheating in multiple records." },
-      { name: "Stormfly", status: "Not Approved", knownFor: "Long history of hacking accusations and bans." }
+      // NOT APPROVED (controversies, cheating, major issues)
+      {
+        name: "Cyclic",
+        status: "Not Approved",
+        knownFor: "Historic cheating controversy despite early influence.",
+        importance: 61
+      },
+      {
+        name: "SpaceUK",
+        status: "Not Approved",
+        knownFor: "Extreme demon records later exposed as cheated.",
+        importance: 62
+      },
+      {
+        name: "Andromeda",
+        status: "Not Approved",
+        knownFor: "Cheating scandals overshadowing earlier contributions.",
+        importance: 63
+      },
+      {
+        name: "Mullsy",
+        status: "Not Approved",
+        knownFor: "Involvement in cheating and community drama.",
+        importance: 64
+      },
+      {
+        name: "Luqualizer",
+        status: "Not Approved",
+        knownFor: "Controversies and accusations affecting reputation.",
+        importance: 65
+      },
+      {
+        name: "Stormfly",
+        status: "Not Approved",
+        knownFor: "Cheating-related controversy and community backlash.",
+        importance: 66
+      },
+      {
+        name: "PlagiarismCase1",
+        status: "Not Approved",
+        knownFor: "Repeated plagiarism of other creators’ work.",
+        importance: 67
+      },
+      {
+        name: "ToxicCreator1",
+        status: "Not Approved",
+        knownFor: "Toxic behavior and major community issues.",
+        importance: 68
+      },
+      {
+        name: "ExploitUser1",
+        status: "Not Approved",
+        knownFor: "Use of exploits and dishonest completions.",
+        importance: 69
+      },
+      {
+        name: "DramaFocused1",
+        status: "Not Approved",
+        knownFor: "More known for drama than for level quality.",
+        importance: 70
+      }
     ];
 
-    const tbody = document.getElementById("creatorTableBody");
-    const filterButtons = document.querySelectorAll(".pill");
+    const tableBody = document.getElementById("creatorTableBody");
     const searchInput = document.getElementById("searchInput");
+    const filterButtons = document.querySelectorAll(".pill");
 
     let currentFilter = "all";
     let currentSearch = "";
 
-    function statusClass(status) {
-      if (status === "Approved") return "approved";
-      if (status === "Half-Approved") return "half";
-      return "not";
-    }
-
     function renderTable() {
-      tbody.innerHTML = "";
+      tableBody.innerHTML = "";
+
       const filtered = creators
-        .filter(c => currentFilter === "all" || c.status === currentFilter)
         .filter(c => {
+          if (currentFilter === "all") return true;
+          return c.status === currentFilter;
+        })
+        .filter(c => {
+          if (!currentSearch) return true;
           const q = currentSearch.toLowerCase();
           return (
             c.name.toLowerCase().includes(q) ||
+            c.status.toLowerCase().includes(q) ||
             c.knownFor.toLowerCase().includes(q)
           );
-        });
+        })
+        .sort((a, b) => a.importance - b.importance);
 
       filtered.forEach((creator, index) => {
         const tr = document.createElement("tr");
 
-        tr.innerHTML = `
-          <td class="rank">${index + 1}</td>
-          <td class="name">${creator.name}</td>
-          <td>${creator.knownFor}</td>
-          <td>
-            <div class="status-cell">
-              <span class="status-dot ${statusClass(creator.status)}"></span>
-              <span class="tag ${statusClass(creator.status)}">${creator.status}</span>
-            </div>
-          </td>
-        `;
+        const rankTd = document.createElement("td");
+        rankTd.className = "rank";
+        rankTd.textContent = index + 1;
 
-        tbody.appendChild(tr);
+        const nameTd = document.createElement("td");
+        nameTd.className = "name";
+        nameTd.textContent = creator.name;
+
+        const statusTd = document.createElement("td");
+        const statusWrapper = document.createElement("div");
+        statusWrapper.className = "status-cell";
+
+        const dot = document.createElement("span");
+        dot.className = "status-dot " + (
+          creator.status === "Approved"
+            ? "approved"
+            : creator.status === "Half-Approved"
+            ? "half"
+            : "not"
+        );
+
+        const tag = document.createElement("span");
+        tag.className = "tag " + (
+          creator.status === "Approved"
+            ? "approved"
+            : creator.status === "Half-Approved"
+            ? "half"
+            : "not"
+        );
+        tag.textContent = creator.status;
+
+        statusWrapper.appendChild(dot);
+        statusWrapper.appendChild(tag);
+        statusTd.appendChild(statusWrapper);
+
+        const knownTd = document.createElement("td");
+        knownTd.textContent = creator.knownFor;
+
+        tr.appendChild(rankTd);
+        tr.appendChild(nameTd);
+        tr.appendChild(statusTd);
+        tr.appendChild(knownTd);
+
+        tableBody.appendChild(tr);
       });
     }
 
@@ -454,8 +875,8 @@
       });
     });
 
-    searchInput.addEventListener("input", e => {
-      currentSearch = e.target.value;
+    searchInput.addEventListener("input", () => {
+      currentSearch = searchInput.value.trim();
       renderTable();
     });
 
